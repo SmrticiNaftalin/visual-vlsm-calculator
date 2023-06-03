@@ -18,6 +18,7 @@ html {
     grid-area: right;
 }
 
+
 .network {
     width: 7rem;
     height: 1.5rem;
@@ -44,10 +45,10 @@ html {
 }
 
 tr {
-    
     background-color: white;
     color: black;
-    height: 1.5rem;
+    height: 2rem;
+    font-size: 1.05rem;
 }
 
 .subnet_table_name {
@@ -65,6 +66,7 @@ tr {
 .subnet_table_address {
     border: 1px solid black;
     border-right: none;
+    padding-left: 0.5rem;
     text-align: left;
     width: 7rem;
 }
@@ -73,20 +75,52 @@ tr {
     border: 1px solid black;
     border-left: none;
     text-align: center;
-    width: 3rem;
+    width: 4rem;
 }
 
 .subnet_table_mask_full {
     border: 1px solid black;
     border-left: none;
-    margin-left: 1rem;
+    padding-left: 0.5rem;
     text-align: left;
-    width: 3rem;
+    width: 8rem;
+}
+
+.subnet_table_wildcard_mask {
+    border: 1px solid black;
+    border-left: none;
+    padding-left: 0.5rem;
+    text-align: left;
+    width: 5rem;
+}
+
+.subnet_table_first {
+    border: 1px solid black;
+    border-left: none;
+    padding-left: 0.5rem;
+    text-align: left;
+    width: 7rem;
+}
+
+.subnet_table_last {
+    border: 1px solid black;
+    border-left: none;
+    padding-left: 0.5rem;
+    text-align: left;
+    width: 7rem;
+}
+
+.blank_row {
+    height: 1rem;
+}
+
+.subnet_header {
+    background-color: green;
 }
 
 #vlsm_square {
     float: right;
-    width: 49rem;
+    width: 48rem;
     aspect-ratio: 1 / 1;
     background-color: rgb(68, 68, 68);
     position: relative;
@@ -145,3 +179,4 @@ tr {
     margin-top: 1rem;
     margin-left: 2rem;
 }
+
