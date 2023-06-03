@@ -1,5 +1,6 @@
 number_of_subnets = 0
 subnets = []
+let start_square = null;
 
 
 //add_subnet("A", 120);
@@ -13,23 +14,34 @@ subnets = []
 function save_network() {
 
     ip = document.getElementById("network_input").value;
-    document.getElementById("saved_network").innerText = ip
+    document.getElementById("saved_network").innerHTML = ip
     
-    mask = parseInt(ip.split("/")[1])
-    if ((mask >= 24) && (mask <=30)) {
-        console.log(mask);
-        setup_square(mask);
-    }
+    start_square = null
+    get_start_square(parseInt(document.getElementById("network_input").value.split("/")[1]));
+    calculate()
+
 }
 
-function setup_square(mask) {
+function get_start_square(mask) {
+    document.getElementById("vlsm_square").innerHTML = ""
+
     if (mask === 24) {
-        return;
+        var start_squares = [   {"square": document.getElementById("vlsm_square"),
+                                    "capacity": 256,
+                                    "min" : 0,
+                                    "max" : 255,
+                                    "last_division": "vert"}]
+        add_subnet_ips(start_squares[0]);
+        return start_squares[0];
     }
-    if (mask === 25) {
-        // TODO
-        return;
+    else {
+        var start_squares = halve(get_start_square(mask - 1))
+
+        start_squares[0]["square"].classList.add("inactive");
+        add_subnet_ips(start_squares[1]);
+        return start_squares[1];
     }
+
 }
 
 function halve(rectangle_object) {
@@ -192,8 +204,13 @@ function write_subnets_and_masks(subnets) {
 }
 
 function calculate() {
+    if (subnets.length === 0) {
+        return
+    }
+
+
 subnets_and_sizes = []
-const square = document.getElementById("vlsm_square");
+
     for (i in subnets) {
         size = Math.pow(2,Math.ceil(Math.log((parseInt(subnets[i].size) + 2))/Math.log(2)))
         subnets_and_sizes.push({"name": subnets[i].name,
@@ -202,20 +219,29 @@ const square = document.getElementById("vlsm_square");
                                 });
 }
     subnets_and_sizes = subnets_and_sizes.sort((a, b) => (a.size < b.size) ? 1 : (a.size > b.size) ? -1 : 0);
-console.log(subnets_and_sizes);
-results = generate_square(subnets_and_sizes);
+
+    mask = parseInt(document.getElementById("network_input").value.split("/")[1]);
+
+    if (start_square === null) {
+
+        start_square = get_start_square(mask)
+    }
+
+results = generate_square(subnets_and_sizes, start_square);
 
 write_subnets_and_masks(results)
 
 }
 
-function add_subnet_name_and_ips(rectangle, name) {
+function add_subnet_name(rectangle, name) {
     name_of_subnet = document.createElement("div");
     name_of_subnet.classList.add("subnet_name")
     name_of_subnet.innerText = name;
 
     rectangle["square"].appendChild(name_of_subnet);
+}
 
+function add_subnet_ips(rectangle) {
     start_ip = document.createElement('div');
     start_ip.classList.add("start_ip");
     start_ip.innerText = rectangle["min"];
@@ -225,10 +251,9 @@ function add_subnet_name_and_ips(rectangle, name) {
     end_ip.classList.add("end_ip");
     end_ip.innerText = rectangle["max"];
     rectangle["square"].appendChild(end_ip);
-
 }
 
-function generate_square(subnets_and_sizes) {
+function generate_square(subnets_and_sizes, start_square) {
 
     final_subnets = [];
 
@@ -242,19 +267,17 @@ function generate_square(subnets_and_sizes) {
                         }
 
 
-    let rectangles = [{ "square": document.getElementById("vlsm_square"),
-                        "capacity": 256,
-                        "min" : 0,
-                        "max" : 255,
-                        "last_division": "vert"}]
+    let rectangles = [start_square]
+    
+    console.log(rectangles[0])
 
     rectangles[0]["square"].innerHTML = "";
 
     while (subnets_and_sizes.length != 0) {
         if ((subnets_and_sizes[0].size) === rectangles[0]["capacity"]){
             
-            add_subnet_name_and_ips(rectangles[0], subnets_and_sizes[0].name);
-            
+            add_subnet_name(rectangles[0], subnets_and_sizes[0].name);
+            add_subnet_ips(rectangles[0]);
             final_subnets.push({"name": subnets_and_sizes[0].name,
                                 "start_ip": rectangles[0]["min"],
                                 "end_ip": rectangles[0]["max"],
