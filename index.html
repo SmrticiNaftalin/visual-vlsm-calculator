@@ -11,9 +11,9 @@
 <body>
 <div id="container">
 <div id="left">
-    <div id="network">  Adresa a maska sítě: <input id="network_input" type="text" class="network" value="192.168.1.0/24" onchange="check_networks(this)">
+    <div id="network">  Adresa a maska sítě: <input id="network_input" type="text" class="network" placeholder="192.168.1.0/24" onchange="check_networks(this)">
                                              <input type="button" class="network" value="nastavit" onclick="save_network()">
-                                             <div id="saved_network_container">Nastavená síť: <div id="saved_network"><red_text>není nastavena</red_text></div></div>                    
+                                             <div id="saved_network_container">Počáteční síť: <div id="saved_network"><red_text>není nastavena</red_text></div></div>                    
     </div>
 <br>
     <div id="subnets">  <form>Přidat subnet:    <input name="sub_name" type="text" placeholder="název" class="subnet_input">

@@ -39,7 +39,7 @@ html {
 
 
 .network {
-    width: 7rem;
+    width: 9rem;
     height: 1.5rem;
     font-size: 1rem;
 }
@@ -98,51 +98,57 @@ tr {
     border: 1px solid black;
     border-right: none;
     padding-left: 0.5rem;
+    padding-right: 0.5rem;
     text-align: left;
-    width: 7rem;
+    min-width: 7rem;
 }
 
 .subnet_table_mask {
     border: 1px solid black;
     border-left: none;
     text-align: center;
-    width: 4rem;
+    min-width: 4rem;
 }
 
 .subnet_table_mask_full {
     border: 1px solid black;
     border-left: none;
     padding-left: 0.5rem;
+    padding-right: 0.5rem;
     text-align: left;
-    width: 8rem;
+    min-width: 8rem;
 }
 
 .subnet_table_wildcard_mask {
     border: 1px solid black;
     border-left: none;
     padding-left: 0.5rem;
+    padding-right: 0.5rem;
     text-align: left;
-    width: 5rem;
+    min-width: 4rem;
 }
 
 .subnet_table_first {
     border: 1px solid black;
     border-left: none;
     padding-left: 0.5rem;
+    padding-right: 0.5rem;
     text-align: left;
-    width: 7rem;
+    min-width: 8.5rem;
 }
 
 .subnet_table_last {
     border: 1px solid black;
     border-left: none;
     padding-left: 0.5rem;
+    padding-right: 0.5rem;
     text-align: left;
-    width: 8rem;
+    min-width: 8.5rem;
 }
 
 .blank_row {
-    height: 1rem;
+    position: relative;
+    right: 0;
 }
 
 .subnet_header {
