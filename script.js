@@ -13,13 +13,13 @@ const size_to_masks = { 256:   ["24", 0],
                         4:     ["30", 252],
 }
 
-add_subnet("A", 120);
-add_subnet("B", 60);
-add_subnet("C", 20);
-add_subnet("D", 14);                  //used for testing
-add_subnet("E", 6);
-add_subnet("F", 2);
-add_subnet("G", 2);
+//add_subnet("A", 120);
+//add_subnet("B", 60);
+//add_subnet("C", 20);
+//add_subnet("D", 14);                  //used for testing
+//add_subnet("E", 6);
+//add_subnet("F", 2);
+//add_subnet("G", 2);
 
 function save_network() {
 
