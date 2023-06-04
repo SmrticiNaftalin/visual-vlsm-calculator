@@ -1,9 +1,28 @@
 html {
     background-color: black;
     color: white;
-    font-size: 125%;
+    font-size: 1.25rem;
     font-family: sans-serif;
 }
+
+@media only screen and (max-width: 999999px) {
+    html {
+        font-size: 1.25rem;
+    }
+}
+
+@media only screen and (max-width: 2000px) {
+    html {
+        font-size: 1.15rem;
+      }
+}
+
+@media only screen and (max-width: 1300px) {
+  html {
+    font-size: 0.8rem;
+  }
+}
+
 
 #container {
     display: grid;
@@ -31,11 +50,23 @@ html {
     font-size: 1rem;
 }
 
-#saved_network {
+#saved_network_container {
     font: 1rem;
     height: 1.5rem;
     margin-left: 8.5rem;
-    padding-top: 0.1rem;
+    padding-top: 1rem;
+}
+
+#saved_network {
+    display: inline
+}
+
+red_text {
+    color: red;
+}
+
+#saved_network {
+    color: yellowgreen;
 }
 
 #table {
@@ -107,7 +138,7 @@ tr {
     border-left: none;
     padding-left: 0.5rem;
     text-align: left;
-    width: 7rem;
+    width: 8rem;
 }
 
 .blank_row {
@@ -120,8 +151,8 @@ tr {
 
 #vlsm_square {
     float: right;
-    width: 48rem;
     aspect-ratio: 1 / 1;
+    width: 48rem;
     background-color: rgb(68, 68, 68);
     position: relative;
 }
