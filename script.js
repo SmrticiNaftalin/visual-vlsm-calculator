@@ -210,7 +210,7 @@ function write_subnets_and_masks(subnets) {
     
     subnet_row = document.createElement("tr");
     subnet_row.classList.add("subnet_row")
-    subnet_row.style = "background-color:" + alternating_background[subnets[k]["order"] % 2] + "; font-weight: bold;"
+    subnet_row.style = "background-color:" + alternating_background[k % 2] + "; font-weight: bold;"
 
     create_table_cell(subnets[k].name, "subnet_table_name", subnet_row);
 
