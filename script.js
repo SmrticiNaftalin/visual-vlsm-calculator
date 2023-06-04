@@ -1,12 +1,24 @@
 number_of_subnets = 0
-subnets = []
+
+let subnets = []
+
+ip = document.getElementById("network_input").value;
+
 let start_square = null;
 
+const size_to_masks = { 256:   ["24", 0],
+128:   ["25", 128],
+64:    ["26", 192],
+32:    ["27", 224],
+16:    ["28", 240],
+8:     ["29", 248],
+4:     ["30", 252],
+}
 
 //add_subnet("A", 120);
 //add_subnet("B", 60);
 //add_subnet("C", 20);
-//add_subnet("D", 14);
+//add_subnet("D", 14);                  used for testing
 //add_subnet("E", 6);
 //add_subnet("F", 2);
 //add_subnet("G", 2);
@@ -17,14 +29,18 @@ function save_network() {
     document.getElementById("saved_network").innerHTML = ip
     
     start_square = null
-    get_start_square(parseInt(document.getElementById("network_input").value.split("/")[1]));
+    get_start_square(get_mask());
     calculate()
 
 }
 
+function get_mask() {
+    return parseInt(document.getElementById("network_input").value.split("/")[1]);
+}
+
 function get_start_square(mask) {
     document.getElementById("vlsm_square").innerHTML = ""
-
+    document.getElementById("result").innerHTML = "";
     if (mask === 24) {
         var start_squares = [   {"square": document.getElementById("vlsm_square"),
                                     "capacity": 256,
@@ -108,6 +124,7 @@ document.querySelector('input[name="sub_size"]').value = "";
 const table = document.getElementById("table");
 
 let row = document.createElement("tr");
+row.setAttribute("id", String(number_of_subnets))
 
 let name_element = document.createElement("td");
 name_element.classList.add("subnet_table_name");
@@ -117,9 +134,25 @@ let hosts = document.createElement("td");
 hosts.classList.add("subnet_table_hosts");
 hosts.innerText = size;
 
-table.appendChild(row);
+let remove = document.createElement("td");
+remove.classList.add("subnet_remove");
+remove.addEventListener("click", function () {
+    var subnet_id = parseInt(this.parentElement.getAttribute("id"))
+    subnet_row = this.parentElement
+    subnet_row.remove()
+    subnets.splice(subnets.findIndex(item => item.order === subnet_id), 1);
+
+    calculate();
+})
+
+
+
+
 row.appendChild(name_element);
 row.appendChild(hosts);
+row.appendChild(remove);
+
+table.appendChild(row);
 
 subnets.push({"name": name,
               "size": size,
@@ -127,7 +160,7 @@ subnets.push({"name": name,
             })
 
 number_of_subnets++
-
+console.log(subnets)
 calculate();
 
 }
@@ -156,7 +189,7 @@ function write_subnets_and_masks(subnets) {
 
     subnets = subnets.sort((a, b) => (a.order > b.order) ? 1 : (a.order < b.order) ? -1 : 0);
 
-    console.log(subnets);
+    //console.log(subnets);
     const results = document.getElementById("result");
 
     results.innerHTML = "";
@@ -205,6 +238,8 @@ function write_subnets_and_masks(subnets) {
 
 function calculate() {
     if (subnets.length === 0) {
+        get_start_square(get_mask())
+        start_square = null;
         return
     }
 
@@ -212,21 +247,20 @@ function calculate() {
 subnets_and_sizes = []
 
     for (i in subnets) {
+       // console.log(i, subnets[i]);
         size = Math.pow(2,Math.ceil(Math.log((parseInt(subnets[i].size) + 2))/Math.log(2)))
         subnets_and_sizes.push({"name": subnets[i].name,
                                 "size": size,
                                 "order": subnets[i]["order"]
                                 });
+       // console.log(i, subnets_and_sizes[i]);
 }
     subnets_and_sizes = subnets_and_sizes.sort((a, b) => (a.size < b.size) ? 1 : (a.size > b.size) ? -1 : 0);
 
-    mask = parseInt(document.getElementById("network_input").value.split("/")[1]);
-
     if (start_square === null) {
 
-        start_square = get_start_square(mask)
+        start_square = get_start_square(get_mask())
     }
-
 results = generate_square(subnets_and_sizes, start_square);
 
 write_subnets_and_masks(results)
@@ -257,19 +291,9 @@ function generate_square(subnets_and_sizes, start_square) {
 
     final_subnets = [];
 
-    const size_to_masks = { 256:   ["24", 0],
-                            128:   ["25", 128],
-                            64:    ["26", 192],
-                            32:    ["27", 224],
-                            16:    ["28", 240],
-                            8:     ["29", 248],
-                            4:     ["30", 252],
-                        }
-
-
     let rectangles = [start_square]
     
-    console.log(rectangles[0])
+    //console.log(rectangles[0])
 
     rectangles[0]["square"].innerHTML = "";
 
@@ -285,7 +309,7 @@ function generate_square(subnets_and_sizes, start_square) {
                                 "mask_/": size_to_masks[rectangles[0]["capacity"]][0],
                                 "order": subnets_and_sizes[0]["order"]
                                 });
-            console.log(rectangles[0])
+            //console.log(rectangles[0])
 
             subnets_and_sizes.shift();
             rectangles.shift();

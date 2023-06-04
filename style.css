@@ -159,6 +159,32 @@ tr {
     transform: translate(-50%, -50%);
 }
 
+.subnet_remove {
+    background: rgb(143, 0, 0);
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+}
+.subnet_remove:after {
+    content: '';
+    height: 2rem;
+    border-left: 2px solid #fff;
+    position: absolute;
+    transform: rotate(45deg);
+    top: 0;
+    left: 1rem;
+}
+
+.subnet_remove:before {
+    content: '';
+    height: 2rem;
+    border-left: 2px solid #fff;
+    position: absolute;
+    transform: rotate(-45deg);
+    top: 0;
+    left: 1rem;
+}
+
 .start_ip {
     position: absolute; 
     top: 0; 
@@ -179,4 +205,3 @@ tr {
     margin-top: 1rem;
     margin-left: 2rem;
 }
-
