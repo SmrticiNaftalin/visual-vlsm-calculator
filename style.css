@@ -161,13 +161,18 @@ tr {
     padding: 0;
     margin: 0;
     aspect-ratio: 1 / 1;
-    float:inline-start;
+    float: inline-start;
 }
 
 #show_full {
     height: 2rem;
-    padding-left: 3rem;
-    text-align: left;
+    padding-left: 2rem;
+    text-align: center;
+    display: inline-flex;
+}
+
+center_text {
+    padding-top: 0.45rem;
 }
 
 .visible {

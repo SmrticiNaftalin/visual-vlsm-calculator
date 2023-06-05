@@ -20,7 +20,7 @@ console.log("| |  / / /  / ___//  |/  /        / ____/   |  / /   / ____/ / / / 
 console.log("| | / / /   \\__ \\/ /|_/ /        / /   / /| | / /   / /   / / / / /   / /| | / / / / / / /_/ /   ");
 console.log("| |/ / /______/ / /  / /        / /___/ ___ |/ /___/ /___/ /_/ / /___/ ___ |/ / / /_/ / _, _/      ");
 console.log("|___/_____/____/_/  /_/         \\____/_/  |_/_____/\\____/\\____/_____/_/  |_/_/  \\____/_/ |_|   ");
-console.log();
+console.log("\n");
 console.log("by Naftalín");
 
 
@@ -352,10 +352,10 @@ function write_subnets_and_masks(subnets) {
 
     if (get_checkbox_state()) {
 
-    last_cell.innerHTML = "<div id='show_full'><input type='checkbox' id='checkbox' onchange='set_checkbox_state(this.checked); calculate();' checked>&nbsp;zobrazit celou IP</div>";
+    last_cell.innerHTML = "<div id='show_full'><input type='checkbox' id='checkbox' onchange='set_checkbox_state(this.checked); calculate();' checked><center_text>&nbsp;zobrazit celou IP</center_text></div>";
     }
     else {
-    last_cell.innerHTML = "<div id='show_full'><input type='checkbox' id='checkbox' onchange='set_checkbox_state(this.checked); calculate();'>&nbsp;zobrazit celou IP</div>";
+    last_cell.innerHTML = "<div id='show_full'><input type='checkbox' id='checkbox' onchange='set_checkbox_state(this.checked); calculate();'><center_text>&nbsp;zobrazit celou IP</center_text></div>";
     }   
     last_row.appendChild(last_cell);
     results.appendChild(last_row);
