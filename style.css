@@ -134,7 +134,7 @@ tr {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     text-align: left;
-    min-width: 8.5rem;
+    min-width: 7rem;
 }
 
 .subnet_table_last {
@@ -143,12 +143,39 @@ tr {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     text-align: left;
-    min-width: 8.5rem;
+    min-width: 7rem;
 }
 
-.blank_row {
-    position: relative;
-    right: 0;
+.last_row {
+    background: none;
+    border: none;
+    border-collapse: collapse;
+}
+
+.hidden {
+    border-collapse: collapse;
+}
+
+#checkbox {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    aspect-ratio: 1 / 1;
+    float:inline-start;
+}
+
+#show_full {
+    height: 2rem;
+    padding-left: 3rem;
+    text-align: left;
+}
+
+.visible {
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    background-color:cornflowerblue;
+    border: 1px solid white;
 }
 
 .subnet_header {

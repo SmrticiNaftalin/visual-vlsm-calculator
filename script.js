@@ -2,6 +2,8 @@ number_of_subnets = 0
 
 let subnets = []
 
+let checkbox_memory = false;
+
 let start_square = null;
 
 const size_to_masks = { 256:   ["24", 0],
@@ -12,6 +14,15 @@ const size_to_masks = { 256:   ["24", 0],
                         8:     ["29", 248],
                         4:     ["30", 252],
 }
+
+console.log(" _    ____   _____ __  ___         _________    __    ________  ____    ___  __________  ____      ");
+console.log("| |  / / /  / ___//  |/  /        / ____/   |  / /   / ____/ / / / /   /   |/_  __/ __ \\/ __ \\   ");
+console.log("| | / / /   \\__ \\/ /|_/ /        / /   / /| | / /   / /   / / / / /   / /| | / / / / / / /_/ /   ");
+console.log("| |/ / /______/ / /  / /        / /___/ ___ |/ /___/ /___/ /_/ / /___/ ___ |/ / / /_/ / _, _/      ");
+console.log("|___/_____/____/_/  /_/         \\____/_/  |_/_____/\\____/\\____/_____/_/  |_/_/  \\____/_/ |_|   ");
+console.log();
+console.log("by Naftalín");
+
 
 //add_subnet("A", 120);
 //add_subnet("B", 60);
@@ -28,6 +39,9 @@ function save_network() {
     set_ip(ip)
     
     start_square = null
+
+    check_mask(get_ip(), get_mask());
+
     get_start_square(get_mask());
     calculate()
     check_networks(document.getElementById("network_input"))
@@ -42,7 +56,27 @@ function check_networks(input) {
     if (input.value != saved_ip.innerHTML) {
         saved_ip.style = "color: orange;"
     }
+}
 
+function check_mask(ip, mask) {
+    const valid_masks = {   0: 24,
+                            128: 25,
+                            192: 26,
+                            224: 27,
+                            240: 28,
+                            248: 29,
+                            252: 30,    };
+    var last_byte = ip[3]
+
+    if (isNaN(mask)) {
+        set_ip("<red_text>chybí maska</red_text>")
+    }
+    else if (mask === valid_masks[last_byte]) {
+        return
+    }
+    else {
+        set_ip("<red_text>maska neodpovídá poslednímu bytu IP - poslední byte: "+last_byte+" - očekávaná maska: "+valid_masks[last_byte]+"</red_text>")
+    }
 }
 
 function set_ip(ip) {
@@ -52,16 +86,31 @@ function set_ip(ip) {
 }
 
 function get_ip() {
-    
     ip = document.getElementById("saved_network").innerHTML
     ip = ip.split("/")[0].split(".");
-    console.log(ip);
+    //console.log(ip);
     return ip
 }
 
 function get_mask() {
     return parseInt(document.getElementById("network_input").value.split("/")[1]);
 }
+
+function set_checkbox_state(state) {
+    checkbox_memory = state;
+}
+
+function get_checkbox_state() {
+    if (document.getElementById("checkbox") === null) {
+        return checkbox_memory;
+    }
+    else {
+        checkbox_memory = document.getElementById("checkbox").checked
+        return checkbox_memory;
+    }
+}
+
+
 
 function get_start_square(mask) {
     document.getElementById("vlsm_square").innerHTML = ""
@@ -191,7 +240,6 @@ subnets.push({"name": name,
             })
 
 number_of_subnets++
-console.log(subnets)
 calculate();
 
 }
@@ -262,21 +310,55 @@ function write_subnets_and_masks(subnets) {
     create_table_cell("0.0.0." + (255 - subnets[k]["mask"]),
                       "subnet_table_wildcard_mask",
                       subnet_row);
-    
-    create_table_cell("." + String(parseInt(subnets[k]["start_ip"] + 1)),
-                      "subnet_table_first",
-                      subnet_row);
-                      
-    create_table_cell("." + parseInt(subnets[k]["end_ip"] - 1),
-                      "subnet_table_last",
-                      subnet_row);
-    
-    var blank_row = document.createElement("tr");
-    blank_row.classList.add("blank_row")
 
-    //results.appendChild(blank_row);
+    if (get_checkbox_state()) {
+
+        create_table_cell(ip[0] + "." + ip[1] + "." + ip[2] + "." + String(parseInt(subnets[k]["start_ip"] + 1)),
+                          "subnet_table_first",
+                          subnet_row);
+    
+    
+        create_table_cell(ip[0] + "." + ip[1] + "." + ip[2] + "." + parseInt(subnets[k]["end_ip"] - 1),
+                          "subnet_table_last",
+                          subnet_row);
+
+        }
+    else {
+    
+        create_table_cell("." + String(parseInt(subnets[k]["start_ip"] + 1)),
+                          "subnet_table_first",
+                          subnet_row);
+        
+        create_table_cell("." + parseInt(subnets[k]["end_ip"] - 1),
+                          "subnet_table_last",
+                          subnet_row);
+    }
+    
     results.appendChild(subnet_row);
     }
+
+    var last_row = document.createElement("tr");
+    last_row.classList.add("last_row")
+
+    create_table_cell("","hidden", last_row);
+    create_table_cell("","hidden", last_row);
+    create_table_cell("","hidden", last_row);
+    create_table_cell("","hidden", last_row);
+    create_table_cell("","hidden", last_row);
+
+    var last_cell = document.createElement("td");
+    last_cell.colSpan = 2;
+    last_cell.classList.add("visible");
+
+    if (get_checkbox_state()) {
+
+    last_cell.innerHTML = "<div id='show_full'><input type='checkbox' id='checkbox' onchange='set_checkbox_state(this.checked); calculate();' checked>&nbsp;zobrazit celou IP</div>";
+    }
+    else {
+    last_cell.innerHTML = "<div id='show_full'><input type='checkbox' id='checkbox' onchange='set_checkbox_state(this.checked); calculate();'>&nbsp;zobrazit celou IP</div>";
+    }   
+    last_row.appendChild(last_cell);
+    results.appendChild(last_row);
 }
 
 function calculate() {
